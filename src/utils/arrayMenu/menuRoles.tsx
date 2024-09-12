@@ -1,5 +1,13 @@
-import { HomeIcon, OrdersIcon, ProductIcon, SettingsIcon, UsersIcon } from '@/icons';
-import EcommerceUpdateIcon from '@/icons/EcommerceUpdateIcon';
+import {
+  FormulationIcon,
+  HomeIcon,
+  OrdersIcon,
+  ProductIcon,
+  ProductionIcon,
+  SettingsIcon,
+  UsersIcon,
+} from "@/icons";
+import EcommerceUpdateIcon from "@/icons/EcommerceUpdateIcon";
 
 const menuRole = {
   admin: [
@@ -18,8 +26,8 @@ const menuRole = {
     },
     {
       id: 5,
-      name: 'Usuarios',
-      href: '/dashboard/admin/users',
+      name: "Usuarios",
+      href: "/dashboard/admin/users",
       icon: UsersIcon,
     },
     {
@@ -33,6 +41,18 @@ const menuRole = {
       name: "Pedidos",
       href: "/dashboard/admin/orders",
       icon: OrdersIcon,
+    },
+    {
+      id: 8,
+      name: "Formulacion",
+      href: "/dashboard/admin/formulation",
+      icon: FormulationIcon,
+    },
+    {
+      id: 8,
+      name: "Producion",
+      href: "/dashboard/admin/production",
+      icon: ProductionIcon,
     },
   ],
   seller: [
