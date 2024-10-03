@@ -1,10 +1,9 @@
 import { axiosApi } from "../api";
 
-const getProducts = async (types?) => {
-  const typeQueryParam = types ? `?types=${types}` : "";
+const GetOrdersByUSer = async ({ userId }) => {
   try {
-    const response = await axiosApi.get(`/products${typeQueryParam}`);
-
+    const response = await axiosApi.get(`/orders/filtered?userId=${userId}`);
+    console.log("response", response.data);
     return response.data;
   } catch (error: any) {
     let message = "";
@@ -17,4 +16,4 @@ const getProducts = async (types?) => {
   }
 };
 
-export default getProducts;
+export default GetOrdersByUSer;

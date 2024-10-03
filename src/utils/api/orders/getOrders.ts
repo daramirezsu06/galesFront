@@ -1,8 +1,8 @@
 import { axiosApi } from "../api";
 
-const GetOrder = async () => {
+const GetOrders = async ({ userId }) => {
   try {
-    const response = await axiosApi.get("/orders");
+    const response = await axiosApi.get(`/orders`);
     console.log("response", response.data);
     return response.data;
   } catch (error: any) {
@@ -16,4 +16,4 @@ const GetOrder = async () => {
   }
 };
 
-export default GetOrder;
+export default GetOrders;

@@ -10,8 +10,7 @@ import createUser from "@/utils/api/users/createUser";
 import putUser from "@/utils/api/users/putUser";
 import CircleButton from "@/components/shared/CircleButton";
 import { EditIcon, TrashIcon, PlusIcon } from "@/icons";
-import { Actions } from '@/utils/types/tables/actions.enum';
-
+import { Actions } from "@/utils/types/tables/actions.enum";
 
 const intialUser = {
   address: "",
@@ -56,7 +55,7 @@ const useUsersTable = ({ users }) => {
 
   const ExpandedComponent = ({ data }) => (
     <div>
-      <div className="flex justify-end gap-4 md:hidden">
+      <div className="flex justify-start gap-4 md:hidden">
         <div onClick={() => handleDelete(data)} className="btn-icon">
           <CircleButton className="p-2 rounded-full cursor-pointer hover:bg-purple-950/20">
             <TrashIcon className="text-red-700 w-6 h-6" />
@@ -103,7 +102,9 @@ const useUsersTable = ({ users }) => {
         </div>
         <div className="grid grid-cols-2">
           <span className="font-semibold">Vendedor:</span>
-          <span>{sellers.find(seller => seller.id === data.sellerId)?.name}</span>
+          <span>
+            {sellers.find((seller) => seller.id === data.sellerId)?.name}
+          </span>
         </div>
         <div className="grid grid-cols-2">
           <span className="font-semibold">Imagen:</span>
@@ -173,7 +174,6 @@ const useUsersTable = ({ users }) => {
   };
 
   const handleChange = (name: string, value: string) => {
-
     console.log("handleChange", name, value);
     setCurrentData({ ...currentData, [name]: value });
 
@@ -211,8 +211,9 @@ const useUsersTable = ({ users }) => {
       setLoading(false);
       await Swal.fire({
         icon: "success",
-        title: `Usuario ${action === Actions.NEW ? "creado" : "modificado"
-          } con éxito`,
+        title: `Usuario ${
+          action === Actions.NEW ? "creado" : "modificado"
+        } con éxito`,
         showConfirmButton: false,
         width: "450px",
         timer: 1500,
