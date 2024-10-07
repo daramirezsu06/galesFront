@@ -39,8 +39,6 @@ const ModalProduction: React.FC<ModalProps> = ({
       productionItems,
       quantityProduced,
     };
-    const response = await postNewProduction(productionData);
-    console.log("productionData", productionData);
 
     try {
       await postNewProduction(productionData); // Llamada al endpoint

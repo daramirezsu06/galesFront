@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { AttributesIcon, BrandsIcon, CategoriesIcon } from "@/icons";
 import ProductionOrders from "./productionsOrders/Productions";
+import Productions from "./productions/Productions";
 
 const ProductionTabs = ({ allproductions, allproductionOrders }) => {
   const [toggleState, setToggleState] = useState(1);
@@ -38,13 +39,13 @@ const ProductionTabs = ({ allproductions, allproductionOrders }) => {
           <ProductionOrders allproductionOrders={allproductionOrders} />
         </div>
 
-        {/* <div
+        <div
           className={
             toggleState === 2 ? "tab__content active__content" : "tab__content"
           }>
-          <Brands allBrands={allBrands} />
+          <Productions allproductions={allproductions} />
         </div>
-        <div
+        {/* <div
           className={
             toggleState === 3 ? "tab__content active__content" : "tab__content"
           }>
