@@ -51,7 +51,7 @@ const menuRole = {
     {
       id: 8,
       name: "Producion",
-      href: "/dashboard/admin/production",
+      href: "/dashboard/admin/ordersAndProductions",
       icon: ProductionIcon,
     },
   ],
