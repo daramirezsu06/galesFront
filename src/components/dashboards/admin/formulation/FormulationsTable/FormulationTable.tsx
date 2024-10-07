@@ -1,7 +1,6 @@
 "use client";
 
 import DataTable from "react-data-table-component";
-import NewEditUser from "../NewEditUser/NewFormulation";
 import { paginationOptions } from "@/utils/types/tables/PaginationOptions";
 import { Actions } from "@/utils/types/tables/actions.enum";
 import useFormulationsTable from "./useFormulationTable";
@@ -22,13 +21,13 @@ const FormulationTable = ({ formulations, productsList }) => {
     handleCancel,
     handleChange,
     expandRow,
-  } = useFormulationsTable({ formulations });
+  } = useFormulationsTable(formulations);
+
   return (
     <>
       {action === Actions.VIEW && (
         <DataTable
-          //dense
-          title="Usuarios"
+          title="Formulaciones"
           actions={subHeaderComponentMemo}
           columns={columns}
           data={filteredItems}
@@ -48,8 +47,8 @@ const FormulationTable = ({ formulations, productsList }) => {
           currentData={currentData}
           productsList={productsList}
           action={action}
-          hadleSubmit={() => {
-            console.log("hola submit");
+          handleSubmit={() => {
+            console.log("Submitting form");
           }}
           handleCancel={handleCancel}
           sellers={sellers}
@@ -58,4 +57,5 @@ const FormulationTable = ({ formulations, productsList }) => {
     </>
   );
 };
+
 export default FormulationTable;

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import createInventoryTransaccion from "@/utils/api/inventory/createInventory";
+import { useEffect, useState } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -21,7 +22,7 @@ const ModalNewInventory: React.FC<ModalProps> = ({
   onClose,
 }) => {
   const initialState: InventoryState = {
-    productId: productId,
+    productId: "", // Inicializar como cadena vacía en lugar de null
     date: new Date().toISOString(), // Fecha actual por defecto
     quantity: 0,
     reason: "adjustment", // Valor inicial por defecto
@@ -42,6 +43,13 @@ const ModalNewInventory: React.FC<ModalProps> = ({
 
   const [inventoryState, setInventory] = useState<InventoryState>(initialState);
 
+  useEffect(() => {
+    setInventory((prevState) => ({
+      ...prevState,
+      productId, // Actualiza solo el productId en el estado
+    }));
+  }, [productId]);
+
   // Actualizar el estado a medida que el usuario edita los campos
   const handleChange = (
     e: React.ChangeEvent<
@@ -49,17 +57,28 @@ const ModalNewInventory: React.FC<ModalProps> = ({
     >
   ) => {
     const { name, value } = e.target;
+
     setInventory((prev) => ({
       ...prev,
-      [name]: value, // Usar el name del input para actualizar el estado correspondiente
+      [name]:
+        name === "quantity" || name === "cost"
+          ? Number(value) // Convertir a número si el campo es quantity o cost
+          : value, // Usar el name del input para actualizar el estado correspondiente
     }));
   };
 
   // Manejar el envío del formulario
-  const handleSubmit = () => {
-    console.log("Transacción de inventario:", inventoryState);
-    // Aquí podrías enviar la transacción a un servidor o backend, utilizando fetch o axios, etc.
-    onClose(); // Cerrar el modal después de la transacción
+  const handleSubmit = async () => {
+    try {
+      const newTransaccion = await createInventoryTransaccion(inventoryState);
+      console.log(newTransaccion); // Manejar la respuesta de la transacción
+      console.log(inventoryState);
+      console.log(productId);
+
+      onClose(); // Cerrar el modal después de la transacción
+    } catch (error) {
+      console.error(error); // Manejar errores
+    }
   };
 
   if (!isOpen) return null;
