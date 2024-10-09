@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import ShopCartItem from "./shopCartItem";
 import newOrder from "@/utils/api/orders/newOrder";
 import GetOrder from "@/utils/api/orders/getOrders";
+import { IProduct } from "@/utils/types/products/IProduct";
 
 const ShopCart = () => {
-  const [productList, setProductList] = useState([]);
+  const [productList, setProductList] = useState<IProduct[]>([]);
   const { products, userId } = useShopCartStore();
 
   const sendOrder = async () => {
@@ -23,6 +24,9 @@ const ShopCart = () => {
     const ListCar = data
       .map((product) => {
         console.log("product", product);
+        if (!products) {
+          return;
+        }
 
         const matchedProduct = products.find(
           (element) => element.id === product.id

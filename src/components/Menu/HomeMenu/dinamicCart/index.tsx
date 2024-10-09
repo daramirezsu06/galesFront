@@ -40,18 +40,10 @@ const DinamicCart = () => {
           showShopCart ? "left-0" : "-left-full"
         }`}>
         <div className="m-4 overflow-y-scroll h-[80vh]">
-          {products.map((product) => (
-            <ItemCar product={product} key={product.id} />
-            // <div key={product.id} className='flex items-center gap-4 mt-4'>
-            //   <Image src={product.thumbnail} width={64} height={64} className='w-16 h-16 object-cover'
-            //     alt={product.name} />
-            //   <div className='flex flex-col text-sm'>
-            //     <p>{product.name} - ${product.retailPrice} x {product.quantity}u = ${product.retailPrice * product.quantity}</p>
-            //     <AddToCart product={product} />
-            //     <hr className='border-b border-b-gray-900 mt-2' />
-            //   </div>
-            // </div>
-          ))}
+          {products &&
+            products.map((product) => (
+              <ItemCar product={product} key={product.id} />
+            ))}
           <p className="mt-8 text-center">Total : {totalCart}</p>
           <Link
             href="/new-order"

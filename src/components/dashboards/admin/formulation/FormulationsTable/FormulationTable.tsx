@@ -43,15 +43,9 @@ const FormulationTable = ({ formulations, productsList }) => {
         <NewFormulation
           loading={loading}
           errors={errors}
-          handleChange={handleChange}
-          currentData={currentData}
           productsList={productsList}
           action={action}
-          handleSubmit={() => {
-            console.log("Submitting form");
-          }}
           handleCancel={handleCancel}
-          sellers={sellers}
         />
       )}
     </>

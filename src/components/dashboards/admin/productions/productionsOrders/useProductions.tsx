@@ -27,7 +27,11 @@ const useProductionOrders = ({ allproductionOrders }) => {
   };
 
   useEffect(() => {
-    setProductionOrdes(allproductionOrders);
+    if (allproductionOrders) {
+      setProductionOrdes(allproductionOrders);
+    } else {
+      console.warn("No se recibieron órdenes de producción");
+    }
   }, [allproductionOrders]);
 
   const columns = [

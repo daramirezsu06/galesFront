@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-
 import { useShopCartStore } from "@/store/shopCart.store";
 
 const UseCar = () => {
@@ -9,12 +8,16 @@ const UseCar = () => {
   const buttonCartRef = useRef<HTMLButtonElement>(null);
   const divCartRef = useRef<HTMLDivElement>(null);
   const { products, userId, setProducts } = useShopCartStore();
+
   useEffect(() => {
-    setProdQuantity(products.length);
-    const total = products.reduce((total, producto) => {
-      return total + producto.retailPrice * producto.quantity;
-    }, 0);
-    setTotalCart(total);
+    if (products) {
+      // Verificamos si products no es null o undefined
+      setProdQuantity(products.length);
+      const total = products.reduce((total, producto) => {
+        return total + producto.retailPrice * producto.quantity;
+      }, 0);
+      setTotalCart(total);
+    }
   }, [products]);
 
   useEffect(() => {
@@ -45,7 +48,7 @@ const UseCar = () => {
     totalCart,
     prodQuantity,
     userId,
-    setProducts,  
+    setProducts,
   };
 };
 

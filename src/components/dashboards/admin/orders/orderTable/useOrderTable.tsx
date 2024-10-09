@@ -14,8 +14,10 @@ import { Actions } from "@/utils/types/tables/actions.enum";
 import GetOrdersByUSer from "@/utils/api/orders/getOrdersByUser";
 import { formatDate } from "@/utils/formatDate/formatDate";
 import ModalOrder from "../newOrder/newOrder";
+import { User } from "../../users/types/usertype";
+import { OrderResponse } from "@/utils/types/orders/ordertype";
 
-const intialUser = {
+const initialUser = {
   address: "",
   email: "",
   id: "",
@@ -29,9 +31,9 @@ const intialUser = {
 };
 
 const useUsersTable = ({ users }) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<User[]>([initialUser]);
   const [action, setAction] = useState(Actions.VIEW);
-  const [currentData, setCurrentData] = useState(intialUser);
+  const [currentData, setCurrentData] = useState(initialUser);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [filterText, setFilterText] = useState("");
@@ -59,7 +61,7 @@ const useUsersTable = ({ users }) => {
   }, [users]);
 
   const ExpandedComponent = ({ data }) => {
-    const [orderHistory, setOrderHistory] = useState([]);
+    const [orderHistory, setOrderHistory] = useState<OrderResponse[]>([]);
 
     useEffect(() => {
       const fetchOrdersRecords = async () => {

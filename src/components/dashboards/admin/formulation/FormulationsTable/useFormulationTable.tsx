@@ -10,6 +10,7 @@ import { Actions } from "@/utils/types/tables/actions.enum";
 import ModalProductionOrder from "../productOrder/newProductOrderModal";
 import { Formulation, initialFormulation } from "../types/typesFormulations";
 
+
 const intialFormulation = {
   id: "",
   presentation: "",
@@ -28,7 +29,7 @@ const intialFormulation = {
 };
 
 const useFormulationsTable = (formulations) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Formulation[]>([initialFormulation]);
   const [action, setAction] = useState(Actions.VIEW);
   const [currentData, setCurrentData] = useState(intialFormulation);
   const [errors, setErrors] = useState({});

@@ -1,34 +1,35 @@
-import { useEffect, useState } from 'react'
-import Swal from 'sweetalert2';
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
-import { validateForm, validatefield } from '@/components/forms/validateForm';
-import newBrand from '@/utils/api/brands/newBrand';
-import updBrand from '@/utils/api/brands/updBrand';
-import uploadFile from '@/utils/api/files/uploadFile';
-import { Actions } from '@/utils/types/tables/actions.enum';
+import { validateForm, validatefield } from "@/components/forms/validateForm";
+import newBrand from "@/utils/api/brands/newBrand";
+import updBrand from "@/utils/api/brands/updBrand";
+import uploadFile from "@/utils/api/files/uploadFile";
+import { Actions } from "@/utils/types/tables/actions.enum";
+import { IBrand } from "@/utils/types/brands/IBrand";
 
 const useNewEditBrand = ({ brand, action, handleRefresh }) => {
-  const [data, setData] = useState({
-    id: '',
-    name: '',
-    description: '',
-    image: null,
-  })
+  const [data, setData] = useState<IBrand>({
+    id: "",
+    name: "",
+    description: "",
+    image: "",
+  });
   const [errors, setErrors] = useState({
-    name: '',
-    description: '',
-    image: '',
-  })
-  const [loading, setLoading] = useState(false)
+    name: "",
+    description: "",
+    image: "",
+  });
+  const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState();
-  const [preview, setPreview] = useState('');
+  const [preview, setPreview] = useState<string | undefined>("");
 
   useEffect(() => {
     if (action === Actions.EDIT) {
-      setData(brand)
+      setData(brand);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [action])
+  }, [action]);
 
   useEffect(() => {
     if (!selectedFile) {
@@ -44,14 +45,14 @@ const useNewEditBrand = ({ brand, action, handleRefresh }) => {
   }, [selectedFile]);
 
   const handleChange = (name: string, value: string) => {
-    setData({ ...data, [name]: value })
+    setData({ ...data, [name]: value });
 
     const error = validatefield(name, value);
     setErrors({
       ...errors,
       [name]: error,
     });
-  }
+  };
 
   const onSelectFile = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -64,10 +65,10 @@ const useNewEditBrand = ({ brand, action, handleRefresh }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const errors = validateForm(data, 'editBrandForm');
+    const errors = validateForm(data, "editBrandForm");
     const valuesFormError = Object.values(errors);
     if (valuesFormError.some((el) => el !== null)) {
-      setErrors(errors)
+      setErrors(errors);
       return;
     }
 
@@ -76,39 +77,49 @@ const useNewEditBrand = ({ brand, action, handleRefresh }) => {
       setLoading(true);
       if (selectedFile) {
         const formData = new FormData();
-        formData.append('image', selectedFile);
+        formData.append("image", selectedFile);
         const { secure_url } = await uploadFile(formData);
-        editData.image = secure_url
+        editData.image = secure_url;
       }
       if (!editData.image) delete editData.image;
 
       let newCat;
 
-      (action === Actions.NEW) ?
-        newCat = await newBrand(editData) :
-        newCat = await updBrand(id, editData)
+      action === Actions.NEW
+        ? (newCat = await newBrand(editData))
+        : (newCat = await updBrand(id, editData));
 
       handleRefresh(newCat);
 
       setLoading(false);
       await Swal.fire({
-        icon: 'success',
-        title: `Categoría ${action === Actions.NEW ? 'creada' : 'modificada'} con éxito`,
+        icon: "success",
+        title: `Categoría ${
+          action === Actions.NEW ? "creada" : "modificada"
+        } con éxito`,
         showConfirmButton: false,
-        width: '450px',
-        timer: 1500
+        width: "450px",
+        timer: 1500,
       });
     } catch (error) {
       setLoading(false);
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
+        icon: "error",
+        title: "Error",
         text: error,
       });
     }
   };
 
-  return { data, selectedFile, preview, loading, errors, onSelectFile, handleChange, handleSubmit }
-
-}
+  return {
+    data,
+    selectedFile,
+    preview,
+    loading,
+    errors,
+    onSelectFile,
+    handleChange,
+    handleSubmit,
+  };
+};
 export default useNewEditBrand;

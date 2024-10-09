@@ -16,7 +16,7 @@ export interface IProduct {
   sku: string;
   status: ProductStatus;
   stock: number;
-  thumbnail: string;
+  thumbnail?: string;
   wholesalePrice: number;
   images: any[];
 }

@@ -9,6 +9,7 @@ const NewOrder = () => {
   const domicilio = 225;
   const router = useRouter();
   const sendOrder = async () => {
+    if (!products) return;
     const listProducts = products.map((product) => ({
       id: product.id,
       quantity: product.quantity,
@@ -42,9 +43,10 @@ const NewOrder = () => {
       <div>
         <h1 className="text-xl">Mi carrito</h1>
         <div className="border-t border-gray-950">
-          {products.map((product) => (
-            <ItemCar product={product} key={product.id} />
-          ))}
+          {products &&
+            products.map((product) => (
+              <ItemCar product={product} key={product.id} />
+            ))}
         </div>
       </div>
 

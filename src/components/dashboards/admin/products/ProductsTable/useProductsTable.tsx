@@ -13,12 +13,12 @@ import { IProduct } from "@/utils/types/products/IProduct";
 import ModalNewInventory from "../addinventory/addinventoryModal";
 
 const useProductsTable = ({ products }) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<IProduct[]>([]);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [rowExpand, setRowExpand] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [selectedProductId, setSelectedProductId] = useState<string>("");
 
   const { action, setAction, setProduct } = useProductStore((state) => state);
 
@@ -44,7 +44,7 @@ const useProductsTable = ({ products }) => {
           className="w-full h-[60px] object-cover"
           width={60}
           height={60}
-          src={row.thumbnail}
+          src={row.thumbnail || "/path/to/default/image.png"} // Imagen por defecto
           alt={row.name}
         />
       ),
@@ -80,7 +80,8 @@ const useProductsTable = ({ products }) => {
     },
     {
       name: "Estado",
-      selector: (row: IProduct) => tradStatus(row.status),
+      selector: (row: IProduct) =>
+        tradStatus(row.status) || "Estado desconocido",
       sortable: true,
       hide: 768,
     },

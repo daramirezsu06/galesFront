@@ -16,7 +16,7 @@ interface Product {
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  userId: string;
+  userId: string | null;
 }
 
 const ModalOrder: React.FC<ModalProps> = ({ userId, isOpen, onClose }) => {

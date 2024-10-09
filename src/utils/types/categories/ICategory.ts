@@ -3,5 +3,6 @@ export interface ICategory {
   name: string;
   description: string;
   show: boolean;
-  image: string;
+  image?: string;
+  productCount?: number;
 }

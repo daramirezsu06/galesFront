@@ -1,6 +1,6 @@
 import { axiosApi } from "../api";
 
-const GetOrders = async ({ userId }) => {
+const GetOrders = async () => {
   try {
     const response = await axiosApi.get(`/orders`);
     console.log("response", response.data);

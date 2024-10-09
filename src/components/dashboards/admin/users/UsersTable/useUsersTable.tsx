@@ -11,30 +11,18 @@ import putUser from "@/utils/api/users/putUser";
 import CircleButton from "@/components/shared/CircleButton";
 import { EditIcon, TrashIcon, PlusIcon } from "@/icons";
 import { Actions } from "@/utils/types/tables/actions.enum";
+import { initUser, IUser } from "@/utils/types/users/IUser";
 
-const intialUser = {
-  address: "",
-  email: "",
-  id: "",
-  identification: "",
-  registerDate: null,
-  name: "",
-  phone: "",
-  status: UserStatus.ACTIVE,
-  role: Role.CUSTOMER,
-  sellerId: "",
-};
-
-const useUsersTable = ({ users }) => {
-  const [data, setData] = useState([]);
+const useUsersTable = ({ users }: { users: IUser[] }) => {
+  const [data, setData] = useState<IUser[]>([]);
   const [action, setAction] = useState(Actions.VIEW);
-  const [currentData, setCurrentData] = useState(intialUser);
+  const [currentData, setCurrentData] = useState<IUser>(initUser);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [rowExpand, setRowExpand] = useState({});
-  const [sellers, setSellers] = useState([]);
+  const [sellers, setSellers] = useState<IUser[]>([]);
 
   const filteredItems = data.filter(
     (item) =>
@@ -159,12 +147,12 @@ const useUsersTable = ({ users }) => {
   };
 
   const onNew = () => {
-    setCurrentData(intialUser);
+    setCurrentData(initUser);
     setAction(Actions.NEW);
   };
 
   const handleCancel = () => {
-    setCurrentData(intialUser);
+    setCurrentData(initUser);
     setAction(Actions.VIEW);
   };
 
