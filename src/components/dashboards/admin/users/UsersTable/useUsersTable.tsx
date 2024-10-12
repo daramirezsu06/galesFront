@@ -149,6 +149,7 @@ const useUsersTable = ({ users }: { users: IUser[] }) => {
   const onNew = () => {
     setCurrentData(initUser);
     setAction(Actions.NEW);
+    console.log("se undio para crear nuevo");
   };
 
   const handleCancel = () => {
@@ -188,9 +189,14 @@ const useUsersTable = ({ users }: { users: IUser[] }) => {
       const { id, ...data } = currentData;
       delete data.registerDate;
       if (action === Actions.NEW) {
+        console.log("intento crear nuevo");
+        console.log(data);
+
         await createUser(data);
       } else {
-        await putUser(id, data);
+        console.log("intento modificar");
+
+        await putUser(id as string, data);
       }
 
       router.push("/dashboard/admin/users");
