@@ -20,14 +20,14 @@ const ProductionTabs = ({ allproductions, allproductionOrders }) => {
           onClick={() => toggleTab(1)}
           className={toggleState === 1 ? "tabs active__tabs" : "tabs"}>
           <CategoriesIcon className="w-6 h-6" />
-          <span>Productions</span>
+          <span>Production Orders</span>
         </div>
 
         <div
           onClick={() => toggleTab(2)}
           className={toggleState === 2 ? "tabs active__tabs" : "tabs"}>
           <BrandsIcon className="w-6 h-6" />
-          <span>Production Orders</span>
+          <span>Productions</span>
         </div>
       </div>
 

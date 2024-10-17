@@ -2,6 +2,8 @@ import "react-international-phone/style.css";
 import Spinner2 from "@/components/shared/Spinner2";
 import { useEffect, useState } from "react";
 import postNewFormulation from "@/utils/api/formulations/postFormulation";
+import { Actions } from "@/utils/types/tables/actions.enum";
+import Swal from "sweetalert2"; 
 
 const NewFormulation = ({
   loading,
@@ -9,6 +11,7 @@ const NewFormulation = ({
   action,
   handleCancel,
   productsList,
+  setAction,
 }) => {
   // Estado inicial para la nueva formulación
   const [newFormulation, setNewFormulation] = useState({
@@ -23,16 +26,41 @@ const NewFormulation = ({
       },
     ],
   });
-  const handleSubmit = async (event) => {
-    event.preventDefault(); // Evitar el comportamiento por defecto del formulario
-    try {
-      await postNewFormulation(newFormulation);
-      alert("Formulación creada con éxito");
-    } catch (error) {
-      console.error("Error al crear la formulación:", error);
-      alert(error);
-    }
-  };
+    const handleSubmit = async (event) => {
+      event.preventDefault(); // Evita el comportamiento por defecto del formulario
+
+      // Mostrar alerta de confirmación
+      const result = await Swal.fire({
+        title: "¿Estás seguro?",
+        text: "¿Deseas crear esta formulación?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, crear",
+        cancelButtonText: "Cancelar",
+      });
+
+      if (result.isConfirmed) {
+        try {
+          await postNewFormulation(newFormulation);
+          Swal.fire(
+            "¡Creada!",
+            "La formulación ha sido creada con éxito.",
+            "success"
+          );
+          setAction(Actions.VIEW);
+        } catch (error) {
+          console.error("Error al crear la formulación:", error);
+          Swal.fire(
+            "Error",
+            "Ocurrió un error al crear la formulación.",
+            "error"
+          );
+        }
+      } else {
+        // El usuario canceló la creación
+        Swal.fire("Cancelado", "La formulación no ha sido creada.", "info");
+      }
+    };
 
 
   // Función para manejar cambios en la nueva formulación

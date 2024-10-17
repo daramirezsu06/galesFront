@@ -10,7 +10,6 @@ import { Actions } from "@/utils/types/tables/actions.enum";
 import ModalProductionOrder from "../productOrder/newProductOrderModal";
 import { Formulation, initialFormulation } from "../types/typesFormulations";
 
-
 const intialFormulation = {
   id: "",
   presentation: "",
@@ -200,6 +199,7 @@ const useFormulationsTable = (formulations) => {
     ExpandedComponent,
     handleCancel,
     handleChange,
+    setAction,
   };
 };
 

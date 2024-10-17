@@ -15,7 +15,8 @@ import GetOrdersByUSer from "@/utils/api/orders/getOrdersByUser";
 import { formatDate } from "@/utils/formatDate/formatDate";
 import ModalOrder from "../newOrder/newOrder";
 import { User } from "../../users/types/usertype";
-import { OrderResponse } from "@/utils/types/orders/ordertype";
+import { OrderResponse, PaymentStatus } from "@/utils/types/orders/ordertype";
+import putPayentOrder from "@/utils/api/orders/putPaymentOrder";
 
 const initialUser = {
   address: "",
@@ -41,7 +42,10 @@ const useUsersTable = ({ users }) => {
   const [rowExpand, setRowExpand] = useState({});
   const [sellers, setSellers] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [selectedUser, setSelectedUser] = useState<{
+    id: string;
+    name: string;
+  }>({ id: "", name: "" });
 
   const filteredItems = data.filter(
     (item) =>
@@ -59,19 +63,51 @@ const useUsersTable = ({ users }) => {
       )
     );
   }, [users]);
+  useEffect(() => {
+    console.log("selecionado print por useefect", selectedUser);
+  }, [selectedUser]);
 
   const ExpandedComponent = ({ data }) => {
     const [orderHistory, setOrderHistory] = useState<OrderResponse[]>([]);
 
-    useEffect(() => {
-      const fetchOrdersRecords = async () => {
-        const orders = await GetOrdersByUSer({ userId: data.id });
-        console.log(orders);
-        setOrderHistory(orders);
-      };
+    const fetchOrdersRecords = async () => {
+      const orders = await GetOrdersByUSer({ userId: data.id });
+      console.log("user", data.id);
 
+      console.log("ordenes optenidas", orders);
+      setOrderHistory(orders);
+    };
+
+    useEffect(() => {
       fetchOrdersRecords();
     }, [data.id]); // Asegúrate de que se dependa del ID correcto
+
+    const handlePayment = async (orderId) => {
+      const response = await putPayentOrder(orderId);
+    };
+
+    const confirmPayment = (orderId) => {
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "¿Deseas notificar que esta orden ha sido pagada?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, notificar pago",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          handlePayment(orderId);
+          fetchOrdersRecords(); // Ejecuta la función para cambiar el estado del pago
+          Swal.fire(
+            "¡Pagada!",
+            "El estado del pago ha sido actualizado.",
+            "success"
+          );
+        }
+      });
+    };
 
     return (
       <div>
@@ -80,7 +116,7 @@ const useUsersTable = ({ users }) => {
           <div
             onClick={() => {
               setModalOpen(true);
-              setSelectedUserId(data.id);
+              setSelectedUser({ name: data.name, id: data.id });
             }}
             className="btn-icon">
             <CircleButton className="p-2 rounded-full cursor-pointer hover:bg-purple-950/20">
@@ -98,7 +134,7 @@ const useUsersTable = ({ users }) => {
           orderHistory.map((recod) => (
             <div
               key={recod.id}
-              className="bg-gray-300 rounded text-sm m-4 p-4 border border-gray-500 shadow-xl grid grid-cols-1 gap-2 md:grid-cols-3">
+              className="bg-gray-300 rounded text-sm m-4 p-4 border border-gray-500 shadow-xl grid grid-cols-1 gap-2 md:grid-cols-4">
               <div className="flex gap-2">
                 <samp>Fecha:</samp>
                 <span>{formatDate(recod.date)}</span>
@@ -110,6 +146,22 @@ const useUsersTable = ({ users }) => {
               <div className="flex gap-2">
                 <samp>Valor:</samp>
                 <p>{recod.total}</p>
+              </div>
+              <div className="flex gap-2">
+                {recod.PaymentStatus === PaymentStatus.PENDING ? (
+                  <button
+                    className="bg-red-600 p-2 rounded-md"
+                    onClick={() => {
+                      confirmPayment(recod.id); // Llama a confirmPayment para mostrar la alerta
+                    }}>
+                    Cambiar a pagada
+                  </button>
+                ) : (
+                  <>
+                    <samp>Estado:</samp>
+                    <p className="text-lime-600">{recod.PaymentStatus}</p>
+                  </>
+                )}
               </div>
             </div>
           ))}
@@ -149,18 +201,14 @@ const useUsersTable = ({ users }) => {
           <div
             onClick={() => {
               setModalOpen(true);
-              setSelectedUserId(row.id);
+              setSelectedUser({ id: row.id, name: row.name });
+              console.log({ id: row.id, name: row.name });
             }}
             className="btn-icon">
             <CircleButton className="p-2 rounded-full cursor-pointer hover:bg-purple-950/20">
               <PlusIcon className="w-8 h-8 text-teal-700" />
             </CircleButton>
           </div>
-          <ModalOrder
-            userId={selectedUserId}
-            isOpen={modalOpen}
-            onClose={() => setModalOpen(false)}
-          />
         </div>
       ),
     },
@@ -203,7 +251,9 @@ const useUsersTable = ({ users }) => {
     sellers,
     ExpandedComponent,
     setModalOpen,
-    setSelectedUserId,
+    setSelectedUser,
+    modalOpen,
+    selectedUser,
   };
 };
 

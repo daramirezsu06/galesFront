@@ -21,6 +21,7 @@ const FormulationTable = ({ formulations, productsList }) => {
     handleCancel,
     handleChange,
     expandRow,
+    setAction,
   } = useFormulationsTable(formulations);
 
   return (
@@ -46,6 +47,7 @@ const FormulationTable = ({ formulations, productsList }) => {
           productsList={productsList}
           action={action}
           handleCancel={handleCancel}
+          setAction={setAction}
         />
       )}
     </>

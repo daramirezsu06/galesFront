@@ -38,6 +38,12 @@ export interface ProductionOrder {
   productionOrderItems: ProductionOrderItem[];
   product: Product;
 }
+export enum ProductionOrderStatus {
+  IN_PROCESS = "IN_PROCESS",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED",
+}
+
 
 export const productionsOrderInitialState: ProductionOrder = {
   id: "",

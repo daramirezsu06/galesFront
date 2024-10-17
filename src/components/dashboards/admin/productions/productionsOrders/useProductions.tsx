@@ -4,6 +4,7 @@ import { EditIcon, TrashIcon } from "@/icons";
 import { useEffect, useState } from "react";
 import {
   ProductionOrder,
+  ProductionOrderStatus,
   productionsOrderInitialState,
 } from "../types/productionOrdersType";
 import ModalProduction from "./createProductionModal";
@@ -15,6 +16,11 @@ const useProductionOrders = ({ allproductionOrders }) => {
   const [selectedproductionOrder, setSelectedproductionOrder] = useState(
     productionsOrderInitialState
   );
+  const statusColors = {
+    [ProductionOrderStatus.IN_PROCESS]: "bg-yellow-500 text-white",
+    [ProductionOrderStatus.COMPLETED]: "bg-green-500 text-white",
+    [ProductionOrderStatus.CANCELLED]: "bg-red-500 text-white",
+  };
 
   const handleOpenModal = (row) => {
     setSelectedproductionOrder(row); // Actualiza la fórmula seleccionada con la fila actual
@@ -45,6 +51,17 @@ const useProductionOrders = ({ allproductionOrders }) => {
       selector: (row) => row.status,
       sortable: true,
       hide: 768,
+      cell: (row) => {
+        // Renderiza un span con el color correspondiente al estado
+        return (
+          <span
+            className={`inline-flex items-center justify-center px-2 py-1 rounded-full ${
+              statusColors[row.status]
+            }`}>
+            {row.status}
+          </span>
+        );
+      },
     },
     {
       name: "producto",
@@ -73,6 +90,7 @@ const useProductionOrders = ({ allproductionOrders }) => {
             isOpen={modalOpen}
             onClose={() => setModalOpen(false)}
             productionOrder={selectedproductionOrder}
+            setProductionOrdes={setProductionOrdes}
           />
         </div>
       ),

@@ -2,8 +2,10 @@ import { axiosApi } from "../api";
 
 const GetOrdersByUSer = async ({ userId }) => {
   try {
+    console.log("se enviara el siguiente id", userId);
+
     const response = await axiosApi.get(`/orders/filtered?userId=${userId}`);
-    console.log("response", response.data);
+    console.log("se optienen la siguientes ordenes", response.data);
     return response.data;
   } catch (error: any) {
     let message = "";
