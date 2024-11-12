@@ -12,6 +12,7 @@ import CircleButton from "@/components/shared/CircleButton";
 import { EditIcon, TrashIcon, PlusIcon } from "@/icons";
 import { Actions } from "@/utils/types/tables/actions.enum";
 import { initUser, IUser } from "@/utils/types/users/IUser";
+import { geocodeAddress } from "@/components/googleMaps/geocodeAdress/geocode";
 
 const useUsersTable = ({ users }: { users: IUser[] }) => {
   const [data, setData] = useState<IUser[]>([]);
@@ -23,6 +24,10 @@ const useUsersTable = ({ users }: { users: IUser[] }) => {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [rowExpand, setRowExpand] = useState({});
   const [sellers, setSellers] = useState<IUser[]>([]);
+  const [locationClient, setLocationClient] = useState<any>({
+    lat: 6.164671239329751,
+    lng: -75.59062236353836,
+  });
 
   const filteredItems = data.filter(
     (item) =>
@@ -159,6 +164,13 @@ const useUsersTable = ({ users }: { users: IUser[] }) => {
 
   const onEdit = (row) => {
     setCurrentData(row);
+    if (row.lat && row.lng) {
+      setLocationClient({
+        lat: Number(row.lat),
+        lng: Number(row.lng),
+      });
+    }
+
     setAction(Actions.EDIT);
   };
 
@@ -172,11 +184,22 @@ const useUsersTable = ({ users }: { users: IUser[] }) => {
       [name]: error,
     });
   };
+  const handleBluerAdress = async (e) => {
+    const address = e.target.value;
+    const location = await geocodeAddress(address);
+    setLocationClient({
+      lat: location[0].geometry.location.lat(),
+      lng: location[0].geometry.location.lng(),
+    });
+  };
 
   const hadleSubmit = async (e) => {
     e.preventDefault();
 
-    const errors = validateForm(currentData, "userForm");
+    const errors = validateForm(
+      { ...currentData, lat: locationClient.lat, lng: locationClient.lng },
+      "userForm"
+    );
 
     const valuesFormError = Object.values(errors);
     if (valuesFormError.some((el) => el !== null)) {
@@ -192,11 +215,19 @@ const useUsersTable = ({ users }: { users: IUser[] }) => {
         console.log("intento crear nuevo");
         console.log(data);
 
-        await createUser(data);
+        await createUser({
+          ...data,
+          lat: locationClient.lat,
+          lng: locationClient.lng,
+        });
       } else {
         console.log("intento modificar");
 
-        await putUser(id as string, data);
+        await putUser(id as string, {
+          ...data,
+          lat: locationClient.lat,
+          lng: locationClient.lng,
+        });
       }
 
       router.push("/dashboard/admin/users");
@@ -266,6 +297,9 @@ const useUsersTable = ({ users }: { users: IUser[] }) => {
     hadleSubmit,
     handleCancel,
     handleChange,
+    handleBluerAdress,
+    locationClient,
+    setLocationClient,
   };
 };
 export default useUsersTable;

@@ -17,6 +17,8 @@ export interface IUser {
   role: Role;
   status: string;
   website?: string;
+  lat?: number;
+  lng?: number;
 }
 
 export const initUser = {

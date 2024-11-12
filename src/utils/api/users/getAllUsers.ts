@@ -1,12 +1,14 @@
-import { axiosApi } from '../api';
+import { axiosApi } from "../api";
 
 const getAllUsers = async (url?: string) => {
   try {
-    const response = await axiosApi.get(`/users${url || ''}`);
+    const response = await axiosApi.get(`/users${url || ""}`);
+    console.log("datos cagados de usuarios", response.data);
 
     return response.data;
+    
   } catch (error: any) {
-    let message = '';
+    let message = "";
     if (error.response.data.message) {
       message = error.response.data.message;
     } else {

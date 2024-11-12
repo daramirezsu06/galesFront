@@ -4,6 +4,7 @@ import "react-international-phone/style.css";
 import Spinner2 from "@/components/shared/Spinner2";
 import { USER_STATUS, tradStatus } from "@/utils/types/users/userStatus.enum";
 import { tradRoles, ROLES } from "@/utils/types/users/usersRoles";
+import MapCoworking from "@/components/googleMaps/maps/userMaps";
 
 const NewEditUser = ({
   loading,
@@ -14,6 +15,9 @@ const NewEditUser = ({
   hadleSubmit,
   handleCancel,
   sellers,
+  handleBluerAdress,
+  locationClient,
+  setLocationClient,
 }) => {
   return (
     <>
@@ -35,8 +39,9 @@ const NewEditUser = ({
               value={currentData.name}
             />
             <p
-              className={`input-error ${errors.name ? "opacity-100" : "opacity-0"
-                }`}>
+              className={`input-error ${
+                errors.name ? "opacity-100" : "opacity-0"
+              }`}>
               {errors.name}
             </p>
           </div>
@@ -51,8 +56,9 @@ const NewEditUser = ({
               value={currentData.email}
             />
             <p
-              className={`input-error ${errors.email ? "opacity-100" : "opacity-0"
-                }`}>
+              className={`input-error ${
+                errors.email ? "opacity-100" : "opacity-0"
+              }`}>
               {errors.email}
             </p>
           </div>
@@ -67,8 +73,9 @@ const NewEditUser = ({
               onChange={(phone) => handleChange("phone", phone)}
             />
             <p
-              className={`input-error ${errors.phone ? "opacity-100" : "opacity-0"
-                }`}>
+              className={`input-error ${
+                errors.phone ? "opacity-100" : "opacity-0"
+              }`}>
               {errors.phone}
             </p>
           </div>
@@ -84,8 +91,9 @@ const NewEditUser = ({
               value={currentData.identification || ""}
             />
             <p
-              className={`input-error ${errors.identification ? "opacity-100" : "opacity-0"
-                }`}>
+              className={`input-error ${
+                errors.identification ? "opacity-100" : "opacity-0"
+              }`}>
               {errors.identification}
             </p>
           </div>
@@ -99,27 +107,31 @@ const NewEditUser = ({
                 placeholder="Dirección"
                 className="input-form"
                 onChange={(e) => handleChange(e.target.name, e.target.value)}
+                onBlur={handleBluerAdress}
                 value={currentData.address || ""}
               />
             </div>
 
             <p
-              className={`input-error ${errors.address ? "opacity-100" : "opacity-0"
-                }`}>
+              className={`input-error ${
+                errors.address ? "opacity-100" : "opacity-0"
+              }`}>
               {errors.address}
             </p>
           </div>
           {/* Seller */}
           {action === "NEW" ? null : (
             <div className="relative">
-              <label className="label-form" htmlFor='sellerId'>Vendedor Asignado</label>
+              <label className="label-form" htmlFor="sellerId">
+                Vendedor Asignado
+              </label>
               <div>
                 <select
                   id="sellerId"
                   name="sellerId"
                   className="input-form"
                   onChange={(e) => handleChange(e.target.name, e.target.value)}
-                  value={currentData.sellerId || ''}>
+                  value={currentData.sellerId || ""}>
                   {sellers.map((status) => (
                     <option key={status.id} value={status.id}>
                       {status.name}
@@ -150,8 +162,9 @@ const NewEditUser = ({
               value={currentData.website || ""}
             />
             <p
-              className={`input-error ${errors.website ? "opacity-100" : "opacity-0"
-                }`}>
+              className={`input-error ${
+                errors.website ? "opacity-100" : "opacity-0"
+              }`}>
               {errors.website}
             </p>
           </div>
@@ -179,8 +192,9 @@ const NewEditUser = ({
                 </svg>
               </div>
               <p
-                className={`input-error ${errors["role"] ? "opacity-100" : "opacity-0"
-                  }`}>
+                className={`input-error ${
+                  errors["role"] ? "opacity-100" : "opacity-0"
+                }`}>
                 {errors["role"]}
               </p>
             </div>
@@ -209,11 +223,19 @@ const NewEditUser = ({
                 </svg>
               </div>
               <p
-                className={`input-error ${errors.status ? "opacity-100" : "opacity-0"
-                  }`}>
+                className={`input-error ${
+                  errors.status ? "opacity-100" : "opacity-0"
+                }`}>
                 {errors.status}
               </p>
             </div>
+          </div>
+          <div className="relative">
+            <label className="label-form">ubicacion:</label>
+            <MapCoworking
+              locationByAdress={locationClient}
+              setLocationClient={setLocationClient}
+            />
           </div>
         </div>
         <div className="col-span-2 flex justify-between">
