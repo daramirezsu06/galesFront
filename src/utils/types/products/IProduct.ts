@@ -19,4 +19,5 @@ export interface IProduct {
   thumbnail?: string;
   wholesalePrice: number;
   images: any[];
+  productType: string;
 }

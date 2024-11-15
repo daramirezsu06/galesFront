@@ -204,12 +204,12 @@ const NewFormulation = ({
                     handleChangeNew(index, e.target.name, e.target.value)
                   }
                   value={item.productId}>
-                  {productsList.map((product) => (
+                  {productsList.filter((product) => product.productType === "MP" || product.productType === "PI").map((product) => (
                     <option key={product.id} value={product.id}>
                       {product.name}
                     </option>
                   ))}
-                </select>
+                  </select>
                 <input
                   name="quantity"
                   type="text"

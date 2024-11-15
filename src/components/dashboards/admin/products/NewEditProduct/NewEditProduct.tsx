@@ -155,7 +155,37 @@ const NewEditProduct = ({ handleChangeData }) => {
                   {errors.cod}
                 </p>
               </div>
+              {/* tipo de producto */}
 
+              <div className="relative">
+                <label className="label-form" htmlFor="productType">
+                  Tipo de producto:
+                </label>
+                <div className="mt-2">
+                  <select
+                    id="productType"
+                    name="productType"
+                    className="input-form"
+                    onChange={(e) =>
+                      handleChange(e.target.name, e.target.value)
+                    }
+                    value={product.productType || ""}>
+                    {["", "MP", "EM", "PT", "CO", "PI"].map((type, index) => (
+                      <option key={index} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 top-4 flex items-center px-2 text-gray-700">
+                    <svg
+                      className="h-4 w-4 fill-current"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20">
+                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
               {/* Otros campos similares */}
               {/* ... */}
             </>

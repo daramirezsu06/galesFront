@@ -19,4 +19,5 @@ export const initialProd = {
   thumbnail: '',
   wholesalePrice: 0,
   images: [],
+  productType: '',
 }
