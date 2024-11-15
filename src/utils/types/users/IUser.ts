@@ -31,7 +31,7 @@ export const initUser = {
   identification: "",
   // image: '',
   // password: '',
-  phone: "+54",
+  phone: "+57",
   registerDate: "",
   role: Role.CUSTOMER,
   status: UserStatus.ACTIVE,

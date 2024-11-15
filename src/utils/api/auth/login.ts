@@ -2,8 +2,11 @@ import axios from 'axios';
 
 const urlBase = process.env.NEXT_PUBLIC_API_URL;
 
-const postLogin = async(data: any) => {
+const postLogin = async (data: any) => {
+  
   const url = `${urlBase}/auth/signin`;
+  console.log('url', url);
+  
 
   try {
     const response = await axios.post(url, data, {

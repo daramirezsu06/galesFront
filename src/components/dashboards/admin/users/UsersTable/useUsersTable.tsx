@@ -196,10 +196,7 @@ const useUsersTable = ({ users }: { users: IUser[] }) => {
   const hadleSubmit = async (e) => {
     e.preventDefault();
 
-    const errors = validateForm(
-      { ...currentData, lat: locationClient.lat, lng: locationClient.lng },
-      "userForm"
-    );
+    const errors = validateForm({ ...currentData }, "userForm");
 
     const valuesFormError = Object.values(errors);
     if (valuesFormError.some((el) => el !== null)) {
@@ -210,6 +207,12 @@ const useUsersTable = ({ users }: { users: IUser[] }) => {
     try {
       setLoading(true);
       const { id, ...data } = currentData;
+      console.log({
+        ...data,
+        lat: locationClient.lat,
+        lng: locationClient.lng,
+      });
+
       delete data.registerDate;
       if (action === Actions.NEW) {
         console.log("intento crear nuevo");

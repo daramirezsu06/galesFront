@@ -65,13 +65,14 @@ const NewEditUser = ({
           {/* phone */}
           <div className="">
             <label className="label-form">Teléfono:</label>
-            <PhoneInput
+             <PhoneInput
               className="input-form"
-              defaultCountry="ar"
+              defaultCountry="co"
               name="phone"
               value={currentData.phone || ""}
               onChange={(phone) => handleChange("phone", phone)}
             />
+            
             <p
               className={`input-error ${
                 errors.phone ? "opacity-100" : "opacity-0"
@@ -151,7 +152,7 @@ const NewEditUser = ({
           )}
 
           {/* website */}
-          <div className="">
+          {/* <div className="">
             <label className="label-form">Sitio web:</label>
             <input
               name="website"
@@ -167,7 +168,7 @@ const NewEditUser = ({
               }`}>
               {errors.website}
             </p>
-          </div>
+          </div> */}
 
           <div className="relative">
             <label className="label-form">Rol:</label>
